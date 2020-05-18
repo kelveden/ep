@@ -1,0 +1,8 @@
+{:deps    {clojure.java-time           {:mvn/version "0.3.2"}
+           mvxcvi/puget                {:mvn/version "1.2.1"}
+           org.clojure/clojure         {:mvn/version "1.10.1"}
+           org.threeten/threeten-extra {:mvn/version "1.5.0"}
+           joda-time                   {:mvn/version "2.10.6"}}
+ :aliases {:uberjar {:extra-deps {luchiniatwork/cambada {:mvn/version "1.0.2"}}
+                     :main-opts  ["-m" "cambada.uberjar" "--app-version" "1.0.0" "-m" "ep.core"]}
+           :run     {:main-opts ["-m" "ep.core"]}}}
