@@ -23,8 +23,9 @@ Or from an uberjar
 
 The "date thing" can be:
 
-* A number of epoch days.
-* A number of epoch millis (it assumes that any date-thing above 30000 is a millis value).
+* A number of epoch days (any number less than 100000 is assumed to be epoch days). 
+* A number of epoch minutes (any number in the range 100000..10000000000 inclusive is assumed to be epoch minutes)
+* A number of epoch millis (any number above 10000000000 is assumed to be epoch millis).
 * A date or date/time string in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) form.
 
 Epoch days

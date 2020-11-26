@@ -29,13 +29,13 @@
           (throw e)
           (to-instant (str x "T00:00Z")))))
 
-    ; Epoch minutes
-    (<= 1000000000 x 10000000000)
-    (jt/instant (* 1000 x))
-
     ; Epoch days
-    (< x 1000000000)
+    (< x 100000)
     (jt/instant (* x millis-per-day))
+
+    ; Epoch minutes
+    (<= 100000 x 10000000000)
+    (jt/instant (* 1000 x))
 
     :else
     ; Epoch millis
@@ -60,12 +60,14 @@
 (defn ep
   "Attempts to convert the given x to a date/time and returns a summary. If only a date is specified then
   00:00 on that date is implied as the time."
-      ([x]
-       {:date-time    (to-date-time-string x)
-        :epoch-millis (to-epoch-millis x)
-        :epoch-days   (to-epoch-days x)}))
+  ([x]
+   {:date-time    (to-date-time-string x)
+    :epoch-millis (to-epoch-millis x)
+    :epoch-days   (to-epoch-days x)}))
 
 (defn -main [& [x]]
-  (let [date-thing (try (Long/parseLong x)
-                        (catch Exception _ x))]
+  (let [date-thing (if (clojure.string/blank? x)
+                     (jt/instant (System/currentTimeMillis))
+                     (try (Long/parseLong x)
+                          (catch Exception _ x)))]
     (puget/cprint (ep date-thing))))
