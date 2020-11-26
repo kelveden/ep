@@ -11,9 +11,11 @@
   implied as the time."
   [x]
   (cond
-    (jt/instant? x) x
+    (jt/instant? x)
+    x
 
-    (nil? x) nil
+    (nil? x)
+    nil
 
     (jt/local-date? x)
     (-> (.atStartOfDay x)
@@ -27,10 +29,17 @@
           (throw e)
           (to-instant (str x "T00:00Z")))))
 
+    ; Epoch minutes
+    (<= 1000000000 x 10000000000)
+    (jt/instant (* 1000 x))
+
+    ; Epoch days
+    (< x 1000000000)
+    (jt/instant (* x millis-per-day))
+
     :else
-    (if (> x 30000)
-      (jt/instant x)
-      (jt/instant (* x millis-per-day)))))
+    ; Epoch millis
+    (jt/instant x)))
 
 (defn to-date-time-string
   [x]
@@ -51,11 +60,10 @@
 (defn ep
   "Attempts to convert the given x to a date/time and returns a summary. If only a date is specified then
   00:00 on that date is implied as the time."
-  [x]
-  {:date-time    (to-date-time-string x)
-   :epoch-millis (to-epoch-millis x)
-   :epoch-days   (to-epoch-days x)})
-
+      ([x]
+       {:date-time    (to-date-time-string x)
+        :epoch-millis (to-epoch-millis x)
+        :epoch-days   (to-epoch-days x)}))
 
 (defn -main [& [x]]
   (let [date-thing (try (Long/parseLong x)
