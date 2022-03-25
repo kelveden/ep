@@ -1,7 +1,8 @@
 (ns ep.core
   (:gen-class)
   (:require [java-time :as jt]
-            [puget.printer :as puget]))
+            [puget.printer :as puget])
+  (:import (java.time ZoneOffset)))
 
 (def ^:private millis-per-day (* 60 60 24 1000))
 
@@ -69,4 +70,6 @@
                      (jt/instant (System/currentTimeMillis))
                      (try (Long/parseLong x)
                           (catch Exception _ x)))]
-    (puget/cprint (ep date-thing))))
+    (puget/cprint (ep date-thing)
+                  {:map-coll-separator :line
+                   :map-delimiter      ""})))
