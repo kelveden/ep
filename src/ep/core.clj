@@ -1,8 +1,7 @@
 (ns ep.core
   (:gen-class)
   (:require [java-time :as jt]
-            [puget.printer :as puget])
-  (:import (java.time ZoneOffset)))
+            [puget.printer :as puget]))
 
 (def ^:private millis-per-day (* 60 60 24 1000))
 
@@ -33,7 +32,7 @@
     (< x 100000)
     (jt/instant (* x millis-per-day))
 
-    ; Epoch minutes
+    ; Epoch seconds
     (<= 100000 x 10000000000)
     (jt/instant (* 1000 x))
 
